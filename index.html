@@ -1,139 +1,195 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายการนำเข้าสต๊อก</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 20px; }
-        .main-container { background: #fff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .title-header { color: #ff6b00; font-size: 28px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; }
-        .title-header::before { content: ""; width: 6px; height: 28px; background: #ff6b00; display: inline-block; margin-right: 15px; border-radius: 3px; }
-        
-        /* Table Scroll */
-        .table-responsive-wrapper { overflow-x: auto; border-radius: 10px; border: 1px solid #f0f0f0; }
-        .table { min-width: 1600px; margin-bottom: 0; vertical-align: middle; }
-        .table thead th { background: #fff; padding: 18px; font-weight: 600; color: #333; border-bottom: 2px solid #f8f9fa; }
-        .table tbody td { padding: 20px 15px; border-bottom: 1px solid #f8f9fa; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รายการนำเข้าสต๊อก</title>
 
-        /* Checklist Card Style */
-        .checklist-wrapper { display: flex; gap: 12px; }
-        .check-card { background: #fdfdfd; border: 1px solid #f1f1f1; border-radius: 12px; padding: 15px; min-width: 160px; flex: 1; }
-        .check-card h6 { font-size: 13px; font-weight: bold; color: #2d3436; margin-bottom: 12px; }
-        .form-check { margin-bottom: 8px; }
-        .form-check-label { font-size: 13px; color: #000000; cursor: pointer; }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-        /* Detail List */
-        .info-list { list-style: none; padding: 0; margin: 0; font-size: 14px; color: #2d3436; line-height: 1.8; }
+<style>
+body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 20px; }
+.main-container { background: #fff; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+.title-header { color: #ff6b00; font-size: 28px; font-weight: bold; margin-bottom: 25px; display: flex; align-items: center; }
+.title-header::before { content: ""; width: 6px; height: 28px; background: #ff6b00; margin-right: 15px; border-radius: 3px; }
 
-        /* Action Buttons */
-        .action-group { display: flex; gap: 10px; justify-content: center; }
-        .btn-status { width: 85px; padding: 10px 0; border-radius: 10px; border: none; color: white; font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
-        .btn-confirm { background-color: #28a745; }
-        .btn-confirm:hover { background-color: #218838; }
-        .btn-reject { background-color: #dc3545; }
-        .btn-reject:hover { background-color: #c82333; }
-        .btn-status i { font-size: 16px; }
+.table-responsive-wrapper { overflow-x: auto; border-radius: 10px; border: 1px solid #f0f0f0; }
+.table { min-width: 1600px; margin-bottom: 0; vertical-align: middle; }
+.table thead th { background: #fff; padding: 18px; font-weight: 600; color: #333; border-bottom: 2px solid #f8f9fa; }
+.table tbody td { padding: 20px 15px; border-bottom: 1px solid #f8f9fa; }
 
-        .search-control { border-radius: 20px; background: #f1f3f5; border: none; padding-left: 40px; width: 300px; }
+.check-card { background: #fdfdfd; border: 1px solid #f1f1f1; border-radius: 12px; padding: 15px; min-width: 200px; transition: 0.2s; }
+.check-card.active { border: 1px solid #28a745; background: #f0fff4; }
+
+.form-check { margin-bottom: 8px; }
+.form-check-label { font-size: 13px; color: #000; cursor: pointer; }
+
 .card-muted{
-    background: #f8fafc;          /* พื้นจางลง */
+    background: #f8fafc;
     border: 1px solid #e5e7eb;
-    opacity: 0.6;                 /* ทำให้จางทั้งกล่อง */
+    opacity: 0.6;
 }
 
 .card-muted .form-check-label{
-    color: #9ca3af;               /* ตัวหนังสือจาง */
+    color: #9ca3af;
 }
 
 .card-muted .form-check-input{
-    accent-color: #cbd5e1;        /* สี checkbox จาง */
+    accent-color: #cbd5e1;
 }
 
-    </style>
+.action-group { display: flex; gap: 10px; justify-content: center; }
+.btn-status { width: 85px; padding: 10px 0; border-radius: 10px; border: none; color: white; font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
+.btn-confirm { background-color: #28a745; }
+.btn-reject { background-color: #dc3545; }
+
+.search-control { border-radius: 20px; background: #f1f3f5; border: none; padding-left: 40px; width: 300px; }
+</style>
 </head>
+
 <body>
 
 <div class="main-container">
-    <div class="title-header">รายการนำเข้าสต๊อก</div>
+<div class="title-header">รายการนำเข้าสต๊อก</div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="text-muted small">10 บันทึกต่อหน้า</div>
-        <div class="d-flex gap-3">
-            <div class="position-relative">
-                <i class="bi bi-search position-absolute" style="left: 15px; top: 10px; color: #adb5bd;"></i>
-                <input type="text" class="form-control search-control" placeholder="ค้นหา">
-            </div>
-            <button class="btn btn-primary rounded-pill px-4 shadow-sm"><i class="bi bi-send-fill me-2"></i>ส่งข้อมูล</button>
-        </div>
-    </div>
+<div class="table-responsive-wrapper">
+<table class="table">
+<thead>
+<tr>
+<th>No.</th>
+<th>โมเดล</th>
+<th>Model Info</th>
+<th>ประเภทผลิตภัณฑ์</th>
+<th>Admin</th>
+<th>WH</th>
+<th>PDI Assy</th>
+<th>PDI Qc</th>
+<th>การจัดการ</th>
+</tr>
+</thead>
 
-    <div class="table-responsive-wrapper">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th style="width: 50px;"><input type="checkbox" class="form-check-input"></th>
-                    <th style="width: 100px;">โมเดล</th>
-                    <th style="width: 150px;">Model Info</th>
-                    <th style="width: 200px;">ประเภทผลิตภัณฑ์</th>
-                    <th style="width: 250px;">Admin</th>
-                    <th style="width: 250px;">WH</th>
-                    <th style="width: 250px;">PDI Assy</th>
-                    <th style="width: 250px;">PDI Qc</th>
-		    <th style="width: 250px;">การจัดการ</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
-                    <td><strong>LPE</strong></td>
-                    <td>987654</td>
-                    <td>Powered Pallet Trucks</td>
-		    <td>
-			<div class="check-card">
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">รถยก : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
-                            </div>
-                    </td>
-		    <td>
-			<div class="check-card card-muted">
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">รถยก : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
-                            </div>
-                    </td>
-		    <td>
-			<div class="check-card card-muted">
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">รถยก : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
-                            </div>
-                    </td>
-		    <td>
-			<div class="check-card card-muted">
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">รถยก : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
-                                <div class="form-check"><input type="checkbox" class="form-check-input"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
-                            </div>
-                    </td>
-		    <td>
-			<div class="action-group">
-                            <button class="btn-status btn-confirm">บันทึก</button>
-                            <button class="btn-status btn-reject">ปฏิเสธ</button>
-                        </div>
-		    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>LPE</strong></td>
+<td>987654</td>
+<td>Powered Pallet Trucks</td>
+
+<!-- CARD TEMPLATE -->
+<td>
+<div class="check-card">
+<div class="form-check mb-2 border-bottom pb-2">
+<input type="checkbox" class="form-check-input check-all">
+<label class="form-check-label fw-bold text-primary">เลือกทั้งหมด</label>
 </div>
+
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">รถยก : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
+</div>
+</td>
+
+<td>
+<div class="check-card card-muted">
+<div class="form-check mb-2 border-bottom pb-2">
+<input type="checkbox" class="form-check-input check-all">
+<label class="form-check-label fw-bold text-primary">เลือกทั้งหมด</label>
+</div>
+
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">รถยก : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
+</div>
+</td>
+
+<td>
+<div class="check-card card-muted">
+<div class="form-check mb-2 border-bottom pb-2">
+<input type="checkbox" class="form-check-input check-all">
+<label class="form-check-label fw-bold text-primary">เลือกทั้งหมด</label>
+</div>
+
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">รถยก : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
+</div>
+</td>
+
+<td>
+<div class="check-card card-muted">
+<div class="form-check mb-2 border-bottom pb-2">
+<input type="checkbox" class="form-check-input check-all">
+<label class="form-check-label fw-bold text-primary">เลือกทั้งหมด</label>
+</div>
+
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">รถยก : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">กล่องควบคุม : 123456</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">เครื่องชาร์จ : 987654</label></div>
+<div class="form-check"><input type="checkbox" class="form-check-input item-check"><label class="form-check-label">แบตเตอรี่ : 987654</label></div>
+</div>
+</td>
+
+<td>
+<div class="action-group">
+<button class="btn-status btn-confirm">บันทึก</button>
+<button class="btn-status btn-reject">ปฏิเสธ</button>
+</div>
+</td>
+
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<script>
+document.querySelectorAll(".check-card").forEach(card => {
+
+const checkAll = card.querySelector(".check-all");
+const items = card.querySelectorAll(".item-check");
+
+if(!checkAll) return;
+
+checkAll.addEventListener("change", function () {
+items.forEach(item => item.checked = this.checked);
+updateState();
+});
+
+items.forEach(item => {
+item.addEventListener("change", function () {
+const total = items.length;
+const checked = card.querySelectorAll(".item-check:checked").length;
+
+checkAll.checked = total === checked;
+checkAll.indeterminate = checked > 0 && checked < total;
+
+updateState();
+});
+});
+
+function updateState(){
+const total = items.length;
+const checked = card.querySelectorAll(".item-check:checked").length;
+
+if(total === checked){
+card.classList.add("active");
+}else{
+card.classList.remove("active");
+}
+}
+
+});
+document.querySelectorAll(".check-card.card-muted").forEach(card => {
+    card.querySelectorAll("input[type='checkbox']").forEach(cb => {
+        cb.disabled = true;
+    });
+});
+
+</script>
 
 </body>
 </html>

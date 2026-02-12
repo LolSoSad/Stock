@@ -38,6 +38,46 @@ body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 2
 .card-muted .form-check-input{
     accent-color: #cbd5e1;
 }
+.column-filter{
+    border-radius: 10px;
+    height: 42px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    font-size: 14px;
+}
+
+.column-filter:focus{
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 3px rgba(255,107,0,.15);
+    background: #fff;
+}
+.btn-search{
+    background: #1e88e5;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    height: 42px;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-search:hover{
+    background: #1565c0;
+}
+
+.btn-reset{
+    background: #e53935;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    height: 42px;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-reset:hover{
+    background: #c62828;
+}
 
 .action-group { display: flex; gap: 10px; justify-content: center; }
 .btn-status { width: 85px; padding: 10px 0; border-radius: 10px; border: none; color: white; font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; }
@@ -52,16 +92,40 @@ body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 2
 
 <div class="main-container">
 <div class="title-header">รายการนำเข้าสต๊อก</div>
-<div class="d-flex justify-content-end mb-3">
-    <div class="position-relative">
-        <i class="bi bi-search position-absolute"
-           style="left:15px; top:50%; transform:translateY(-50%); color:#94a3b8;"></i>
-        <input type="text"
-               id="tableSearch"
-               class="form-control search-control"
-               placeholder="ค้นหา">
+<div class="check-card mb-3">
+<div class="row g-3">
+
+    <div class="col-md-2">
+        <input type="text" class="form-control column-filter"
+               data-column="1"
+               placeholder="ค้นหา โมเดล">
+    </div>
+
+    <div class="col-md-2">
+        <input type="text" class="form-control column-filter"
+               data-column="2"
+               placeholder="ค้นหา Model Info">
+    </div>
+
+    <div class="col-md-2">
+        <input type="text" class="form-control column-filter"
+               data-column="3"
+               placeholder="ค้นหา ประเภทผลิตภัณฑ์">
+    </div>
+    <div class="col-md-2 d-flex gap-2">
+
+        <button id="btnSearch" class="btn btn-search w-60">
+            <i class="bi bi-search me-1"></i> ค้นหา
+        </button>
+
+        <button id="btnReset" class="btn btn-reset w-60">
+            <i class="bi bi-arrow-clockwise me-1"></i> รีเซ็ต
+        </button>
+
     </div>
 </div>
+</div>
+
 
 <div class="table-responsive-wrapper">
 <table class="table">
@@ -145,8 +209,9 @@ body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 2
 
 <td>
 <div class="action-group">
-<button class="btn-status btn-confirm">บันทึก</button>
-<button class="btn-status btn-reject">ปฏิเสธ</button>
+<button class="btn-status btn-confirm btn-save">บันทึก</button>
+<button class="btn-status btn-reject btn-reject-action">ปฏิเสธ</button>
+
 </div>
 </td>
 
@@ -218,8 +283,8 @@ body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 2
 
 <td>
 <div class="action-group">
-<button class="btn-status btn-confirm">บันทึก</button>
-<button class="btn-status btn-reject">ปฏิเสธ</button>
+<button class="btn-status btn-confirm btn-save">บันทึก</button>
+<button class="btn-status btn-reject btn-reject-action">ปฏิเสธ</button>
 </div>
 </td>
 
@@ -229,6 +294,7 @@ body { background-color: #f8f9fa; font-family: 'Sarabun', sans-serif; padding: 2
 </table>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 document.querySelectorAll(".check-card").forEach(card => {
@@ -272,16 +338,82 @@ document.querySelectorAll(".check-card.card-muted").forEach(card => {
         cb.disabled = true;
     });
 });
-// ===== Table Search =====
-const searchInput = document.getElementById("tableSearch");
+// ===== Column Filter =====
+document.querySelectorAll(".column-filter").forEach(input => {
+    input.addEventListener("keyup", filterTable);
+    input.addEventListener("change", filterTable);
+});
 
-searchInput.addEventListener("keyup", function () {
-    const value = this.value.toLowerCase();
+function filterTable() {
     const rows = document.querySelectorAll("tbody tr");
 
     rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(value) ? "" : "none";
+        let show = true;
+
+        document.querySelectorAll(".column-filter").forEach(input => {
+            const colIndex = input.getAttribute("data-column");
+            const filterValue = input.value.toLowerCase();
+            const cellText = row.children[colIndex].innerText.toLowerCase();
+
+            if (filterValue && !cellText.includes(filterValue)) {
+                show = false;
+            }
+        });
+
+        row.style.display = show ? "" : "none";
+    });
+}
+// ===== ปุ่มบันทึก =====
+document.querySelectorAll(".btn-save").forEach(btn => {
+    btn.addEventListener("click", function () {
+
+        Swal.fire({
+            icon: "success",
+            title: "บันทึกสำเร็จ",
+            text: "ข้อมูลถูกบันทึกเรียบร้อยแล้ว",
+            confirmButtonColor: "#1e88e5",
+            confirmButtonText: "ตกลง"
+        });
+
+    });
+});
+
+
+// ===== ปุ่มปฏิเสธ =====
+document.querySelectorAll(".btn-reject-action").forEach(btn => {
+    btn.addEventListener("click", function () {
+
+        Swal.fire({
+            title: "กรอกหมายเหตุการปฏิเสธ",
+            input: "textarea",
+            inputPlaceholder: "กรอกเหตุผลที่ปฏิเสธ...",
+            inputAttributes: {
+                'aria-label': 'หมายเหตุการปฏิเสธ'
+            },
+            showCancelButton: true,
+            confirmButtonText: "ยืนยัน",
+            cancelButtonText: "ยกเลิก",
+            confirmButtonColor: "#e53935",
+            inputValidator: (value) => {
+                if (!value) {
+                    return "กรุณากรอกหมายเหตุการปฏิเสธ";
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                Swal.fire({
+                    icon: "warning",
+                    title: "ปฏิเสธเรียบร้อย",
+                    text: "เหตุผล: " + result.value,
+                    confirmButtonColor: "#1e88e5"
+                });
+
+                // ตรงนี้สามารถส่งค่าไป backend ได้
+                console.log("Reject Reason:", result.value);
+            }
+        });
+
     });
 });
 
